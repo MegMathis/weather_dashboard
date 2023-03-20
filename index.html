@@ -15,26 +15,46 @@
     <header>
       <h1><strong>What's Your Weather?</strong></h1>
     </header>
-
     <main class="container">
-      <div class="col-sm-3">
-        <h4 class="SearchCityHeader">Search City:</h4>
-        <form class="input-group mb-3">
-          <input
-            type="text"
-            class="inputValue"
-            id="inputValue"
-            placeholder="Enter City"
-          />
-          <div class="input-group-append">
-            <button
-              class="searchBtn btn brn-primary"
-              id="searchButton"
-              type="button"
-            ></button>
+      <div class="row">
+        <div class="col-sm-3">
+          <h4 class="searchCityHeader">Search City</h4>
+          <form class="input-group mb-3">
+            <input
+              type="text"
+              class="inputValue"
+              id="inputValue"
+              placeholder="Enter your city"
+            />
+            <div class="input-group-append">
+              <button
+                class="searchBtn btn btn-primary"
+                id="searchButton"
+                type="button"
+              ></button>
+            </div>
+          </form>
+        </div>
+        <div class="col-sm-9 display">
+          <div class="current-weather hide card">
+            <h2 class="city-date-icon"></h2>
+            <p class="temp"></p>
+            <p class="humidity"></p>
+            <p class="wind"></p>
           </div>
-        </form>
+          <div class="d-flex five-day-forecast">
+            <h3 class="fiveDayHeader"></h3>
+            <div id="cards" class="col-12 f-flex"></div>
+          </div>
+        </div>
       </div>
     </main>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <script src="Assets/JavaScript/script.js"></script>
   </body>
 </html>
