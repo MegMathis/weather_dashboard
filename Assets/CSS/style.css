@@ -1,0 +1,50 @@
+header {
+  background-color: purple;
+  text-align: center;
+  padding: 30px;
+  color: white;
+}
+
+.searchCityHeader {
+  margin-top: 25px;
+  color: black;
+}
+
+body {
+  background-color: whitesmoke;
+}
+
+.container {
+  margin-left: 10px;
+  padding-left: 10px;
+  min-width: 100px;
+}
+
+h4 {
+  margin: 20px;
+}
+
+input {
+  margin: 20px;
+}
+
+button {
+  margin: 20px;
+}
+
+.five-day-forecast {
+  flex-direction: column;
+}
+
+.cards {
+  margin: 20px;
+  min-width: 100px;
+}
+
+.hide {
+  display: none;
+}
+
+.current-weather {
+  padding: 10px;
+}
