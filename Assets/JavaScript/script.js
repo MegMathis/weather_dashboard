@@ -66,7 +66,7 @@ form.addEventListener("submit", search);
 function search(event) {
   event.preventDefault();
 
-  // functin that will run when the button is clicked will need to do the following:
+  // function that will run when the button is clicked will need to do the following:
 
   // capture the value from the input box
   var userInput = document.getElementById("inputValue");
@@ -92,6 +92,9 @@ function weatherGather(city) {
       //extract the lat & lon
 
       // send to the current weather function
+    })
+    .then(function (data) {
+      console.log(data[0].lon);
     });
 }
 
