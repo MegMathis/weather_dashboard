@@ -8,59 +8,13 @@
 // When I click on a city in the search history
 // then I am again presented with current and future conditions for that city
 
-// var searchField = document.querySelector(".inputValue");
-// var searchButton = document.querySelector("#searchButton");
-// var searchForm = document.querySelector(".searchForm");
-
-// // When I search a city
-// function handlesearchForm(e) {
-//   if (!searchField.value) {
-//     return;
-//   }
-//   e.preventDefault();
-//   console.log(searchField.value);
-//   var city = searchField.value.trim();
-
-//   searchCity(city);
-// }
-
-// function searchCity(city) {
-//   console.log(city);
-
-//   var apiKey = "aea0e9dd933491db706a962609d73f70";
-//   var baseURL = `$http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`;
-// }
-// searchForm.addEventListener("submit", handlesearchForm);
-
 var baseURL = "https://api.openweathermap.org/data/2.5";
 var apiKey = "aea0e9dd933491db706a962609d73f70";
 var weatherURL = baseURL + "weather?lat=" + apiKey;
 var geoURL = "http://api.openweathermap.org/geo/1.0/direct?q=";
-var lat = "39.934002";
-var lon = "-74.89099879999998";
-varURL = baseURL + "weather?lat=" + apiKey + "&lat=" + lat + "&lon=";
-
-// I am presented with current and future conditions for that city
-// $.get(URL).then(function (data) {
-//   console.log(data);
-// });
-
-// fetch(baseURL)
-//   .then(function (resObj) {
-//     // console.log(resObj);
-//     return resObj.json();
-//   })
-//   .then(function (data) {
-//     // console.log(data);
-//     var output = document.querySelector('#current-weather');
-
-//     for (var cityName of data.results) {
-//       var
-//     }
-//   });
-//
-// add event listener to the search button
+var weatherAPIRootUrl = "https://api.openweathermap.org";
 var form = document.querySelector(".searchForm");
+
 form.addEventListener("submit", search);
 
 function search(event) {
@@ -74,29 +28,52 @@ function search(event) {
 }
 
 function weatherGather(city) {
-  console.log(city);
   // create a function that runs our api to gather weather data
   // with the data from the api we will ned to get the temp, wind, humidity, the weather icon
 
-  fetch(
-    "https://api.openweathermap.org/geo/1.0/direct?q=" +
-      city +
-      "&appid=aea0e9dd933491db706a962609d73f70"
-  )
-    .then(function (resObj) {
-      // console.log(resObj);
-      return resObj.json();
-    })
-    .then(function (data) {
-      console.log(data[0].lat);
-      //extract the lat & lon
+  var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
 
-      // send to the current weather function
+  fetch(apiUrl)
+    .then(function (res) {
+      // console.log(resObj);
+      return res.json();
     })
     .then(function (data) {
-      console.log(data[0].lon);
+      let lat = data.coord.lat;
+      let lon = data.coord.lon;
+
+      console.log(lat, lon);
+
+      fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
+      )
+        .then((res) => res.json())
+        .then(function (data) {
+          console.log(data);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+
+      //extract the lat & lon
+    })
+    .catch(function (err) {
+      console.log(err);
     });
 }
 
-function currentWeather(lat, lon) {}
+// // send to the current weather function
+// function renderItems(city, data) {
+//   renderCurrentWeather(city, data);
+// }
 // add the temp, humidity, wind and icon to the appropriate elements in html
+// function renderCurrentWeather(city, weather) {
+//   var temp = weather.main.temp;
+//   var windMPH = weather.wind.speed;
+//   var humidity = weather.main.humidity;
+//   var iconURL = `https://openweathermap.org/img/w/${weather.weather[0].icon}.png`;
+//   var iconDescription = weather.weather[0].description || weather[0].main;
+
+//   console.log(city, weather, temp, windMPH, humidity, iconURL, iconDescription);
+// }
+// renderItems();
