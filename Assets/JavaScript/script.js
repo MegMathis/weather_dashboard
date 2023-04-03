@@ -15,6 +15,12 @@ var geoURL = "http://api.openweathermap.org/geo/1.0/direct?q=";
 var weatherAPIRootUrl = "https://api.openweathermap.org";
 var form = document.querySelector(".searchForm");
 
+var hum_el = document.getElementById("humidity");
+var temp_el = document.getElementById("temp");
+var wind_el = document.getElementById("wind");
+
+console.log(hum_el, temp_el, wind_el);
+
 form.addEventListener("submit", search);
 
 function search(event) {
@@ -49,7 +55,16 @@ function weatherGather(city) {
       )
         .then((res) => res.json())
         .then(function (data) {
+          var description = data.weather[0].description;
+          var degree = data.wind.deg;
+          var windSpeed = data.wind.speed;
+          var humidity = data.main.humidity;
+          console.log(description, degree, windSpeed, humidity);
           console.log(data);
+          document.getElementById("humidity").innerText = humidity;
+          document.getElementById("temp").innerText = degree;
+          document.getElementById("wind").innerText = windSpeed;
+          document.getElementById("desc").innerText = description;
         })
         .catch(function (err) {
           console.log(err);
