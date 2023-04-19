@@ -37,7 +37,8 @@ function weatherGather(city) {
   // create a function that runs our api to gather weather data
   // with the data from the api we will ned to get the temp, wind, humidity, the weather icon
 
-  var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+  var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
+  var API_REM = "&appid=";
 
   fetch(apiUrl)
     .then(function (res) {
@@ -47,24 +48,32 @@ function weatherGather(city) {
     .then(function (data) {
       let lat = data.coord.lat;
       let lon = data.coord.lon;
+      var CITY_ID = data.id;
+
+      var description = data.weather[0].description;
+      var degree = data.wind.deg;
+      var windSpeed = data.wind.speed;
+      var humidity = data.main.humidity;
+      console.log(description, degree, windSpeed, humidity);
+      console.log(data);
+      document.getElementById("humidity").innerText = humidity;
+      document.getElementById("temp").innerText = degree;
+      document.getElementById("wind").innerText = windSpeed;
+      document.getElementById("desc").innerText = description;
+
+      console.log(CITY_ID);
 
       console.log(lat, lon);
 
       fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
+        "https://api.openweathermap.org/data/2.5/forecast?id=" +
+          CITY_ID +
+          API_REM +
+          apiKey
       )
         .then((res) => res.json())
         .then(function (data) {
-          var description = data.weather[0].description;
-          var degree = data.wind.deg;
-          var windSpeed = data.wind.speed;
-          var humidity = data.main.humidity;
-          console.log(description, degree, windSpeed, humidity);
           console.log(data);
-          document.getElementById("humidity").innerText = humidity;
-          document.getElementById("temp").innerText = degree;
-          document.getElementById("wind").innerText = windSpeed;
-          document.getElementById("desc").innerText = description;
         })
         .catch(function (err) {
           console.log(err);
