@@ -1,103 +1,186 @@
-// city is added to the search history
-// When I view current weather conditions for that city
-// I am presented with the city name, the date, an icon representation of weather
-// conditions, the temperature, the humidity, and wind speed
-// when I view future weather conditions for that city
-// then I am presented with a 5-day forecast that displays the date, an icon
-// representation fo weather conditions, the temperature, the windspeed, and humidity
-// When I click on a city in the search history
-// then I am again presented with current and future conditions for that city
-
-var baseURL = "https://api.openweathermap.org/data/2.5";
+// my api key
 var apiKey = "aea0e9dd933491db706a962609d73f70";
-var weatherURL = baseURL + "weather?lat=" + apiKey;
-var geoURL = "http://api.openweathermap.org/geo/1.0/direct?q=";
-var weatherAPIRootUrl = "https://api.openweathermap.org";
-var form = document.querySelector(".searchForm");
 
-var hum_el = document.getElementById("humidity");
-var temp_el = document.getElementById("temp");
-var wind_el = document.getElementById("wind");
+// search vars
+var citySearch = document.querySelector("#city-search");
+var searchForm = document.querySelector("#search-form");
+var weatherIcon = document.querySelector("#weather-icon");
 
-console.log(hum_el, temp_el, wind_el);
+//current stuff vars
+var currentData = document.querySelector("#current-data");
+var currentIcon = document.querySelector("#current-icon");
+var currentHeading = document.querySelector("#current-heading");
 
-form.addEventListener("submit", search);
+// searches vars
+// var clearButton = document.querySelector("#clear-btn");
+var searchWeatherBtn = document.querySelector("#searchWeatherBtn");
+var searchContainer = document.querySelector("#search-container");
+var errorContainer = document.querySelector("#error-container");
 
-function search(event) {
-  event.preventDefault();
+// local storage... come back to
+var search = JSON.parse(localStorage.getItem("search") || "[]");
 
-  // function that will run when the button is clicked will need to do the following:
+var cityList = JSON.parse(localStorage.getItem("lsCityList") || "[]");
+cityList.forEach((cityName) => {
+  createCityButton(cityName);
+});
 
-  // capture the value from the input box
-  var userInput = document.getElementById("inputValue");
-  weatherGather(userInput.value);
-}
+// current weather
+function getCurrentWeather(eventObj, cityName) {
+  if (eventObj) {
+    eventObj.preventDefault();
+  }
 
-function weatherGather(city) {
-  // create a function that runs our api to gather weather data
-  // with the data from the api we will ned to get the temp, wind, humidity, the weather icon
-
-  var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
-  var API_REM = "&appid=";
-
-  fetch(apiUrl)
-    .then(function (res) {
-      // console.log(resObj);
-      return res.json();
-    })
-    .then(function (data) {
-      let lat = data.coord.lat;
-      let lon = data.coord.lon;
-      var CITY_ID = data.id;
-
-      var description = data.weather[0].description;
-      var degree = data.wind.deg;
-      var windSpeed = data.wind.speed;
-      var humidity = data.main.humidity;
-      console.log(description, degree, windSpeed, humidity);
-      console.log(data);
-      document.getElementById("humidity").innerText = humidity;
-      document.getElementById("temp").innerText = degree;
-      document.getElementById("wind").innerText = windSpeed;
-      document.getElementById("desc").innerText = description;
-
-      console.log(CITY_ID);
-
-      console.log(lat, lon);
-
-      fetch(
-        "https://api.openweathermap.org/data/2.5/forecast?id=" +
-          CITY_ID +
-          API_REM +
-          apiKey
-      )
-        .then((res) => res.json())
-        .then(function (data) {
-          console.log(data);
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
-
-      //extract the lat & lon
+  // get current weathrer from open weather... Farenheit is imperial
+  fetch(
+    "https://api.openweathermap.org/data/2.5/weather?q=" +
+      cityName +
+      "&units=imperial&appid=" +
+      apiKey
+  )
+    .then(function (response) {
+      if (response.status !== 200) {
+        console.log("Not working");
+        return;
+      }
+      response.json().then(function (data) {
+        console.log(data);
+        displayCurrentWeather(data);
+        saveSearch(data.name);
+      });
     })
     .catch(function (err) {
-      console.log(err);
+      console.log("Looks like a fetch error", err);
     });
 }
 
-// // send to the current weather function
-// function renderItems(city, data) {
-//   renderCurrentWeather(city, data);
-// }
-// add the temp, humidity, wind and icon to the appropriate elements in html
-// function renderCurrentWeather(city, weather) {
-//   var temp = weather.main.temp;
-//   var windMPH = weather.wind.speed;
-//   var humidity = weather.main.humidity;
-//   var iconURL = `https://openweathermap.org/img/w/${weather.weather[0].icon}.png`;
-//   var iconDescription = weather.weather[0].description || weather[0].main;
+searchForm.addEventListener("submit", (eventObj) =>
+  getCurrentWeather(eventObj, citySearch.value)
+);
 
-//   console.log(city, weather, temp, windMPH, humidity, iconURL, iconDescription);
-// }
-// renderItems();
+// Current Weather Display
+function displayCurrentWeather(data) {
+  var temp = document.querySelector("#temp");
+  var wind = document.querySelector("#wind");
+  var humid = document.querySelector("#humid");
+  var cityName = document.querySelector("#city-name");
+
+  //Date display
+  var date = new Date();
+  var months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  var year = date.getFullYear();
+  var month = months[date.getMonth()];
+  var day = date.getDate();
+  var formatTime = month + " " + day + ", " + year;
+
+  cityName.textContent = data.name + " " + formatTime + "";
+  temp.textContent = "Temp: " + data.main.temp + " °F";
+  wind.textContent = "Wind: " + data.wind.speed + " mph";
+  humid.textContent = "Humidity: " + data.main.humidity + "%";
+  getForecast(data.name);
+}
+
+// getting the future weather from openweather api
+function getForecast(cityName) {
+  fetch(
+    "https://api.openweathermap.org/data/2.5/forecast?q=" +
+      cityName +
+      "&units=imperial&appid=" +
+      apiKey
+  )
+    .then(function (response) {
+      if (response.status !== 200) {
+        console.log("Not working" + response.status);
+        return;
+      }
+      response.json().then(function (data) {
+        console.log(data);
+        displayForecast(data);
+      });
+    })
+    .catch(function (err) {
+      console.log("Looks like a fetch error", err);
+    });
+}
+
+// future weather display
+function displayForecast(data) {
+  var forecastData = [
+    // pick 5 days from the "list:array(40) to get the next 5 days"
+    data.list[0],
+    data.list[10],
+    data.list[19],
+    data.list[28],
+    data.list[35],
+  ];
+
+  document.getElementById("forcastContainer").innerHTML = "";
+  // make the elements for 5 day forcast
+  for (var i = 0; i < forecastData.length; i++) {
+    var section = document.createElement("section");
+    var fiveDayDate = document.createElement("h3");
+    var fiveDayImg = document.createElement("img");
+    var fiveDayTemp = document.createElement("p");
+    var fiveDayWind = document.createElement("p");
+    var fiveDayHumid = document.createElement("p");
+
+    // section.setAttribute(
+    //   "class",
+    //   "text-center col-2 m-2 p-0 border border-primary"
+    // );
+    fiveDayDate.textContent = forecastData[i].dt_txt.split(" ")[0];
+    fiveDayImg.setAttribute(
+      "src",
+      "http://openweathermap.org/img/w/" +
+        forecastData[i].weather[0].icon +
+        ".png"
+    );
+    fiveDayTemp.textContent = "Temp: " + forecastData[i].main.temp + " °F";
+    fiveDayWind.textContent = "Wind: " + forecastData[i].wind.speed + " mph";
+    fiveDayHumid.textContent =
+      "Humidity: " + forecastData[i].main.humidity + "%";
+
+    // append the section
+    section.append(
+      fiveDayDate,
+      fiveDayImg,
+      fiveDayTemp,
+      fiveDayWind,
+      fiveDayHumid
+    );
+    document.getElementById("forcastContainer").append(section);
+  }
+}
+
+// search history saved
+
+function saveSearch(cityName) {
+  if (!cityList.includes(cityName)) {
+    cityList.push(cityName);
+    localStorage.setItem("lsCityList", JSON.stringify(cityList));
+    createCityButton(cityName);
+  }
+}
+
+function createCityButton(cityName) {
+  var cityButton = document.createElement("button");
+  cityButton.textContent = cityName;
+  cityButton.onclick = () => {
+    getCurrentWeather(undefined, cityName);
+  };
+
+  searchContainer.append(cityButton);
+}

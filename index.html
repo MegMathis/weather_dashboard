@@ -9,89 +9,69 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
     />
     <link rel="stylesheet" href="Assets/CSS/style.css" />
-    <title>What's Your Weather?</title>
+    <title>Weather Dashboard</title>
   </head>
+
   <body>
-    <header>
-      <h1><strong>What's Your Weather?</strong></h1>
+    <!-- Weather Dashboard Header -->
+    <header
+      class="d-flex header bg-primary m-2 p-2 text-white justify-content-center"
+    >
+      <h1>Weather Dashboard</h1>
     </header>
-    <main class="container">
-      <div class="row">
-        <div class="col-sm-3">
-          <form class="input-group mb-3 searchForm">
-            <label for="inputValue" class="searchCityHeader">Search City</label>
+
+    <main class="m-5 text-align-center">
+      <div class="row m-0 d-block d-md-flex">
+        <!-- Search For Weather -->
+        <section class="col-12 col-md-3">
+          <form id="search-form">
+            <h2>Search for a City:</h2>
+            <div id="error-container" class="error-msg"></div>
             <input
               type="text"
-              class="inputValue"
-              id="inputValue"
-              placeholder="Enter city"
+              id="city-search"
+              placeholder="Enter a City Name"
+              class="w-100 mb-2"
             />
-            <div class="input-group-append">
-              <button class="searchBtn btn btn-primary" type="submit">
-                Search
-              </button>
-            </div>
+            <button
+              type="submit"
+              id="searchWeatherBtn"
+              class="w-100 mb-3 btn btn-secondary"
+            >
+              Search
+            </button>
           </form>
-        </div>
-        <div class="col-sm-9 display">
-          <div class="current-weather card">
-            <h2 class="city-date-icon"></h2>
-            <p id="desc"></p>
-            <p id="temp"></p>
-            <p id="humidity"></p>
-            <p id="wind"></p>
-          </div>
-          <div class="col-sm-12" id="future-weather">
-            <h3>5 Day Forecast</h3>
-            <div
-              class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2 rounded"
-            >
-              <p id="Date1"></p>
-              <p id="Img1"></p>
-              <p>Temperature<span id="Temp1"></span></p>
-              <p>Humidity<span id="Humidty1"></span></p>
-              <p>Wind<span id="Wind1"></span></p>
-            </div>
-            <div
-              class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2 rounded"
-            >
-              <p id="Date2"></p>
-              <p id="Img2"></p>
-              <p>Temperature <span id="Temp2"></span></p>
-              <p>Humidity <span id="Humidity2"></span></p>
-              <p>Wind<span id="Wind2"></span></p>
-            </div>
-            <div
-              class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2 rounded"
-            >
-              <p id="Date3"></p>
-              <p id="Img3"></p>
-              <p>Temperature<span id="Temp3"></span></p>
-              <p>Humidity<span id="Humidity3"></span></p>
-              <p>Wind<span id="Wind3"></span></p>
-            </div>
-            <div
-              class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2 rounded"
-            >
-              <p id="Date4"></p>
-              <p id="Img4"></p>
-              <p>Temperature<span id="Temp4"></span></p>
-              <p>Humidity<span id="Humidity4"></span></p>
-              <p>Wind<span id="Wind4"></span></p>
-            </div>
-            <div
-              class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2 rounded"
-            >
-              <p id="Date5"></p>
-              <p id="Img5"></p>
-              <p>Temperature<span id="Temp5"></span></p>
-              <p>Humidity<span id="Humidity5"></span></p>
-              <p>Wind<span id="Humidity5"></span></p>
+          <div id="search-container"></div>
+        </section>
+
+        <section class="col-12 col-md-9">
+          <!-- Current Weather -->
+          <div
+            id="current-weather"
+            class="p-3 mb-2 border border-primary rounded"
+          >
+            <h2 id="today-date" class="forecast-date"></h2>
+            <div class="row">
+              <div class="data-container col-4" id="current-data">
+                <h2 class="fw-bold" id="city-name"></h2>
+                <p id="temp"></p>
+                <p id="wind"></p>
+                <p id="humid"></p>
+              </div>
+              <div class="col-4" id="spacer"></div>
+              <div id="current-icon" class="col-4"></div>
             </div>
           </div>
-        </div>
-      </div>
-        </div>
+
+          <!-- 5 Day Forecast -->
+          <div id="forecast" class="p-3 col-2 border border-primary rounded">
+            <h2 class="d-block">5-Day Forecast</h2>
+            <div
+              class="row justify-content-around d-block d-xl-flex mr-0"
+              id="forcastContainer"
+            ></div>
+          </div>
+        </section>
       </div>
     </main>
 

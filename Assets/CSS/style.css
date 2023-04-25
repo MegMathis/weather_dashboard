@@ -48,3 +48,7 @@ button {
 .current-weather {
   padding: 10px;
 }
+
+.data-container div {
+  font-size: 1rem;
+}
