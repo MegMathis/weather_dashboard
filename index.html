@@ -15,28 +15,27 @@
   <body>
     <!-- Weather Dashboard Header -->
     <header
-      class="d-flex header bg-primary m-2 p-2 text-white justify-content-center"
+      class="d-flex header bg-purple m-2 p-2 text-white justify-content-center"
     >
       <h1>Weather Dashboard</h1>
     </header>
 
-    <main class="m-5 text-align-center">
+    <main class="m-4 text-align-center">
       <div class="row m-0 d-block d-md-flex">
         <!-- Search For Weather -->
         <section class="col-12 col-md-3">
           <form id="search-form">
-            <h2>Search for a City:</h2>
-            <div id="error-container" class="error-msg"></div>
+            <h2>Search for City</h2>
             <input
               type="text"
-              id="city-search"
-              placeholder="Enter a City Name"
-              class="w-100 mb-2"
+              id="search-city"
+              placeholder="Enter City Name"
+              class="w-50 mb-2"
             />
             <button
               type="submit"
-              id="searchWeatherBtn"
-              class="w-100 mb-3 btn btn-secondary"
+              id="searchCityBtn"
+              class="w-50 mb-3 btn btn-secondary"
             >
               Search
             </button>
@@ -48,13 +47,13 @@
           <!-- Current Weather -->
           <div
             id="current-weather"
-            class="p-3 mb-2 border border-primary rounded"
+            class="p-1 mb-2 border border-danger rounded"
           >
-            <h2 id="today-date" class="forecast-date"></h2>
+            <h2 id="todays-date" class="forecast-date"></h2>
             <div class="row">
-              <div class="data-container col-4" id="current-data">
+              <div class="data-container col-6" id="current-data">
                 <h2 class="fw-bold" id="city-name"></h2>
-                <p id="temp"></p>
+                <p id="temperature"></p>
                 <p id="wind"></p>
                 <p id="humid"></p>
               </div>
@@ -64,11 +63,11 @@
           </div>
 
           <!-- 5 Day Forecast -->
-          <div id="forecast" class="p-3 col-2 border border-primary rounded">
-            <h2 class="d-block">5-Day Forecast</h2>
+          <div id="forecast" class="p-3">
+            <h2 class="d-block text-align-center">5-Day Forecast</h2>
             <div
               class="row justify-content-around d-block d-xl-flex mr-0"
-              id="forcastContainer"
+              id="forecastContainer"
             ></div>
           </div>
         </section>

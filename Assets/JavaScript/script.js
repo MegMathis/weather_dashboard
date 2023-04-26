@@ -2,7 +2,7 @@
 var apiKey = "aea0e9dd933491db706a962609d73f70";
 
 // search vars
-var citySearch = document.querySelector("#city-search");
+var citySearch = document.querySelector("#search-city");
 var searchForm = document.querySelector("#search-form");
 var weatherIcon = document.querySelector("#weather-icon");
 
@@ -12,15 +12,14 @@ var currentIcon = document.querySelector("#current-icon");
 var currentHeading = document.querySelector("#current-heading");
 
 // searches vars
-// var clearButton = document.querySelector("#clear-btn");
-var searchWeatherBtn = document.querySelector("#searchWeatherBtn");
+var searchCityBtn = document.querySelector("#searchCityBtn");
 var searchContainer = document.querySelector("#search-container");
 var errorContainer = document.querySelector("#error-container");
 
 // local storage... come back to
 var search = JSON.parse(localStorage.getItem("search") || "[]");
 
-var cityList = JSON.parse(localStorage.getItem("lsCityList") || "[]");
+var cityList = JSON.parse(localStorage.getItem("storageCityList") || "[]");
 cityList.forEach((cityName) => {
   createCityButton(cityName);
 });
@@ -60,7 +59,7 @@ searchForm.addEventListener("submit", (eventObj) =>
 
 // Current Weather Display
 function displayCurrentWeather(data) {
-  var temp = document.querySelector("#temp");
+  var temperature = document.querySelector("#temperature");
   var wind = document.querySelector("#wind");
   var humid = document.querySelector("#humid");
   var cityName = document.querySelector("#city-name");
@@ -87,7 +86,7 @@ function displayCurrentWeather(data) {
   var formatTime = month + " " + day + ", " + year;
 
   cityName.textContent = data.name + " " + formatTime + "";
-  temp.textContent = "Temp: " + data.main.temp + " °F";
+  temperature.textContent = "Temperature: " + data.main.temp + " °F";
   wind.textContent = "Wind: " + data.wind.speed + " mph";
   humid.textContent = "Humidity: " + data.main.humidity + "%";
   getForecast(data.name);
@@ -100,20 +99,12 @@ function getForecast(cityName) {
       cityName +
       "&units=imperial&appid=" +
       apiKey
-  )
-    .then(function (response) {
-      if (response.status !== 200) {
-        console.log("Not working" + response.status);
-        return;
-      }
-      response.json().then(function (data) {
-        console.log(data);
-        displayForecast(data);
-      });
-    })
-    .catch(function (err) {
-      console.log("Looks like a fetch error", err);
+  ).then(function (response) {
+    response.json().then(function (data) {
+      console.log(data);
+      displayForecast(data);
     });
+  });
 }
 
 // future weather display
@@ -127,7 +118,7 @@ function displayForecast(data) {
     data.list[35],
   ];
 
-  document.getElementById("forcastContainer").innerHTML = "";
+  document.getElementById("forecastContainer").innerHTML = "";
   // make the elements for 5 day forcast
   for (var i = 0; i < forecastData.length; i++) {
     var section = document.createElement("section");
@@ -137,10 +128,12 @@ function displayForecast(data) {
     var fiveDayWind = document.createElement("p");
     var fiveDayHumid = document.createElement("p");
 
-    // section.setAttribute(
-    //   "class",
-    //   "text-center col-2 m-2 p-0 border border-primary"
-    // );
+    // getting 5 day in a line
+    section.setAttribute(
+      "class",
+      "text-center col-2 m-2 p-0 border border-danger"
+    );
+
     fiveDayDate.textContent = forecastData[i].dt_txt.split(" ")[0];
     fiveDayImg.setAttribute(
       "src",
@@ -148,7 +141,8 @@ function displayForecast(data) {
         forecastData[i].weather[0].icon +
         ".png"
     );
-    fiveDayTemp.textContent = "Temp: " + forecastData[i].main.temp + " °F";
+    fiveDayTemp.textContent =
+      "Temperature: " + forecastData[i].main.temp + " °F";
     fiveDayWind.textContent = "Wind: " + forecastData[i].wind.speed + " mph";
     fiveDayHumid.textContent =
       "Humidity: " + forecastData[i].main.humidity + "%";
@@ -161,7 +155,7 @@ function displayForecast(data) {
       fiveDayWind,
       fiveDayHumid
     );
-    document.getElementById("forcastContainer").append(section);
+    document.getElementById("forecastContainer").append(section);
   }
 }
 
@@ -170,7 +164,7 @@ function displayForecast(data) {
 function saveSearch(cityName) {
   if (!cityList.includes(cityName)) {
     cityList.push(cityName);
-    localStorage.setItem("lsCityList", JSON.stringify(cityList));
+    localStorage.setItem("storageCityList", JSON.stringify(cityList));
     createCityButton(cityName);
   }
 }
