@@ -16,7 +16,7 @@ N/A
 
 ## Screenshot
 
-![Screenshot.](./Assets/Images/Weather.png)
+![Screenshot.](./Assets/Images/screenshot.png)
 
 ## Links to Deployment
 
@@ -27,7 +27,25 @@ https://megmathis.github.io/weather_dashboard/
 
 https://openweathermap.org/
 
+https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
+
+https://www.youtube.com/watch?v=01WtuEiF4G8
+
+https://www.businessinsider.com/guides/tech/degree-symbol-on-keyboard#:~:text=The%20degree%20symbol%20code%20is%20Alt%20%2B%200176.
+
+https://www.youtube.com/watch?v=nGVoHEZojiQ
+
+https://openweathermap.org/weather-conditions
+
+https://www.freecodecamp.org/news/javascript-get-current-date-todays-date-in-js/#:~:text=In%20JavaScript%2C%20we%20can%20easily,%2C%20time%2C%20and%20time%20zone.
+
+https://getbootstrap.com/
+
 Tutoring by Jose
+
+Tutoring by John
+
+Office Hours
 
 ## License
 

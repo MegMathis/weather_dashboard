@@ -61,7 +61,7 @@ searchForm.addEventListener("submit", (eventObj) =>
 function displayCurrentWeather(data) {
   var temperature = document.querySelector("#temperature");
   var wind = document.querySelector("#wind");
-  var humid = document.querySelector("#humid");
+  var humidity = document.querySelector("#humidity");
   var cityName = document.querySelector("#city-name");
 
   //Date display
@@ -88,7 +88,7 @@ function displayCurrentWeather(data) {
   cityName.textContent = data.name + " " + formatTime + "";
   temperature.textContent = "Temperature: " + data.main.temp + " °F";
   wind.textContent = "Wind: " + data.wind.speed + " mph";
-  humid.textContent = "Humidity: " + data.main.humidity + "%";
+  humidity.textContent = "Humidity: " + data.main.humidity + "%";
   getForecast(data.name);
 }
 
@@ -134,7 +134,13 @@ function displayForecast(data) {
       "text-center col-2 m-2 p-0 border border-danger"
     );
 
-    fiveDayDate.textContent = forecastData[i].dt_txt.split(" ")[0];
+    fiveDayDate.textContent = new Date(
+      forecastData[i].dt_txt
+    ).toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "numeric",
+      year: "2-digit",
+    });
     fiveDayImg.setAttribute(
       "src",
       "http://openweathermap.org/img/w/" +
